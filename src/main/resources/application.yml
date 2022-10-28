@@ -1,0 +1,42 @@
+#  1、defaultZone 后面的eureka注册中心的地址要写成域名；
+#  2、eureka.client.register-with-eureka的值要写为true
+#  3、eureka.client.fetch-registry的值要写为true
+#  4、eureka集群中多个eureka服务的spring.application.name的值要一致
+#  5、eureka.instance.prefer-ip-address的值必须设置为false；
+eureka:
+  instance:
+    prefer-ip-address: false
+  client:
+    serviceUrl:
+      defaultZone: http://peer1.com:8761/eureka/,http://peer2.com:8762/eureka/,http://peer3.com:8763/eureka/
+
+    register-with-eureka: true
+    fetch-registry: true
+spring:
+  application:
+    name: eureka
+---
+spring:
+  profiles: peer1
+eureka:
+  instance:
+    hostname: peer1.com
+server:
+  port: 8761
+---
+spring:
+  profiles: peer2
+server:
+    port: 8762
+eureka:
+  instance:
+    hostname: peer2.com
+
+---
+spring:
+  profiles: peer3
+server:
+  port: 8763
+eureka:
+  instance:
+    hostname: peer3.com
